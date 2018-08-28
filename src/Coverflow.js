@@ -91,6 +91,13 @@ class Coverflow extends Component {
       onPanResponderMove: (evt, gestureState) => {
         scrollX.setValue(-(gestureState.dx / sensitivity));
         // scrollX.setValue(offset - (gestureState.dx / sensitivity));
+        // 
+        if (this.isScrolling !== true) {
+          if (this.props.startScrolling) {
+            this.props.startScrolling();
+          }
+          this.isScrolling = true;
+        }
       },
       onPanResponderRelease: (evt, gestureState) => {
         scrollX.flattenOffset();
@@ -142,14 +149,6 @@ class Coverflow extends Component {
   }
 
   onScroll = ({ value }) => {
-    // 
-    if (this.isScrolling !== true) {
-      if (this.props.startScrolling) {
-        this.props.startScrolling();
-      }
-      this.isScrolling = true;
-    }
-    
     // Update the most recent value
     this.scrollPos = value;
 
