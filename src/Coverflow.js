@@ -37,6 +37,7 @@ class Coverflow extends Component {
     children: PropTypes.arrayOf(PropTypes.element).isRequired,
     onPress: PropTypes.func,
     onChange: PropTypes.func.isRequired,
+    startScrolling: PropTypes.func,
   };
 
   static defaultProps = {
@@ -52,6 +53,7 @@ class Coverflow extends Component {
     scaleDown: 0.8,
     scaleFurther: 0.75,
     onPress: undefined,
+    startScrolling: undefined,
   };
 
   constructor(props) {
@@ -67,6 +69,7 @@ class Coverflow extends Component {
       selection: props.initialSelection,
       children: fixChildrenOrder(props, props.initialSelection),
     };
+    this.isScrolling = false;
   }
 
   componentWillMount() {
@@ -139,6 +142,14 @@ class Coverflow extends Component {
   }
 
   onScroll = ({ value }) => {
+    // 
+    if (this.isScrolling !== true) {
+      if (this.props.startScrolling) {
+        this.props.startScrolling();
+      }
+      this.isScrolling = true;
+    }
+    
     // Update the most recent value
     this.scrollPos = value;
 
@@ -177,6 +188,7 @@ class Coverflow extends Component {
     const finalPos = clamp(Math.round(pos), 0, count - 1);
     if (finalPos !== this.scrollPos) {
       this.props.onChange(finalPos);
+      this.isScrolling = false;
 
       Animated.spring(scrollX, {
         toValue: finalPos,
