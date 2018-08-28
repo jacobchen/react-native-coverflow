@@ -37,8 +37,8 @@
     "rimraf": "^2.6.1"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-native": "^0.50.0"
+    "react": "*",
+    "react-native": "*"
   },
   "dependencies": {
     "prop-types": "^15.6.0"
